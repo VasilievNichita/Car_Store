@@ -9,3 +9,10 @@ export type Car = {
   pricePerDay: number; // $/day
   image: string;       // url или /public/...
 };
+
+export type CustomButtonProps = {
+  title: string;
+  containerStyles?: string;
+  handleClick?: () => void;
+  btnType?: "button" | "submit";
+};
