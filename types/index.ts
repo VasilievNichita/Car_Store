@@ -8,6 +8,16 @@ export type Car = {
   mpg: number;         // miles per gallon
   pricePerDay: number; // $/day
   image: string;       // url или /public/...
+  // Дополнительные поля для детального окна
+  year: number;
+  make: string;
+  model: string;
+  cylinders: number;
+  displacement: number;
+  fuelType: string;
+  class: string;
+  // Дополнительные изображения для галереи
+  images?: string[];
 };
 
 export type CustomButtonProps = {

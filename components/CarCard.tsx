@@ -1,11 +1,24 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import { Car } from '@/types';
 
-export default function CarCard({ car }: { car: Car }) {
+interface CarCardProps {
+  car: Car;
+  onCarClick: (car: Car) => void;
+}
+
+export default function CarCard({ car, onCarClick }: CarCardProps) {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
-    <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm hover:shadow-md transition">
+    <div 
+      className="relative rounded-2xl border border-gray-100 bg-white p-5 shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer transform hover:scale-105"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={() => onCarClick(car)}
+    >
       {/* Header */}
       <div className="flex items-start justify-between">
         <h3 className="text-lg font-semibold leading-tight">{car.name}</h3>
@@ -21,7 +34,8 @@ export default function CarCard({ car }: { car: Car }) {
           src={car.image}
           alt={car.name}
           fill
-          className="object-contain"
+          className="object-contain transition-transform duration-300"
+          style={{ transform: isHovered ? 'scale(1.05)' : 'scale(1)' }}
           sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
         />
       </div>
@@ -49,6 +63,18 @@ export default function CarCard({ car }: { car: Car }) {
         </span>
         <span className="text-sm text-gray-700">{car.power} hp</span>
       </div>
+
+      {/* Hover Details Overlay */}
+      {isHovered && (
+        <div className="absolute inset-0 bg-black bg-opacity-80 rounded-2xl flex items-center justify-center transition-opacity duration-300">
+          <div className="text-center text-white">
+            <div className="text-lg font-semibold mb-2">Click for Details</div>
+            <div className="text-sm opacity-90">
+              {car.year} • {car.cylinders} cylinders • {car.displacement}L
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

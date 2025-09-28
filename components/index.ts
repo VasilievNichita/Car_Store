@@ -4,6 +4,7 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import SearchBar from './SearchBar';
 import CarCard from './CarCard';
+import CarDetailsModal from './CarDetailsModal';
 
 export {
     Hero,
@@ -11,5 +12,6 @@ export {
     Navbar,
     Footer,
     SearchBar,
-    CarCard
+    CarCard,
+    CarDetailsModal
 }

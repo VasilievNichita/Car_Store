@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import CarCard from '@/components/CarCard';
 import SearchBar from '@/components/SearchBar';
+import CarDetailsModal from '@/components/CarDetailsModal';
 import { Car } from '@/types';
 import Hero from '@/components/Hero';
 export default function Home() {
@@ -12,6 +13,8 @@ export default function Home() {
   const [type, setType] = useState('');
   const [minPower, setMinPower] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
+  const [selectedCar, setSelectedCar] = useState<Car | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // загрузка
   useEffect(() => {
@@ -58,6 +61,16 @@ export default function Home() {
     });
   }, [cars, query, type, minPower]);
 
+  const handleCarClick = (car: Car) => {
+    setSelectedCar(car);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedCar(null);
+  };
+
   return (
     <div className="min-h-screen">
       {/* Герой */}
@@ -89,7 +102,13 @@ export default function Home() {
               Found {cars.length} cars, showing {filtered.length} after filtering
             </div>
             <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
-              {filtered.map((car) => <CarCard key={car.id} car={car} />)}
+              {filtered.map((car) => (
+                <CarCard 
+                  key={car.id} 
+                  car={car} 
+                  onCarClick={handleCarClick}
+                />
+              ))}
               {filtered.length === 0 && (
                 <div className="text-gray-600">Nothing found. Try other filters.</div>
               )}
@@ -97,6 +116,13 @@ export default function Home() {
           </>
         )}
       </section>
+
+      {/* Car Details Modal */}
+      <CarDetailsModal
+        car={selectedCar}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </div>
   );
 }
